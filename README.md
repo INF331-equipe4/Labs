@@ -1,4 +1,4 @@
-# Labs Equipe 4:
+# Equipe 4:
 Caio Vitor
 
 Dennis Phillips
