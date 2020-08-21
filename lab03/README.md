@@ -2,7 +2,11 @@
 
 ## Tarefa 4
 
+MVC - Orquestração
+
 ![Diagrama de Orquestração](images/mvc_orquestracao.png)
+
+MVC - Coreografia
 
 ![Diagrama de Coreografia](images/mvc_coreografia.png)
 
