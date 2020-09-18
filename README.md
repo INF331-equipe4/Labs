@@ -363,6 +363,60 @@ Método | Objetivo
 
 # Multiplas Interfaces
 
-> Escreva um texto detalhando como seus componentes  podem ser preparados para que seja possível trocar de interface apenas trocando o componente View e mantendo o Model e Controller.
->
-> É recomendado a inserção de, pelo menos, um diagrama que deve ser descrito no texto. O formato do diagrama é livre e deve ilustrar a arquitetura proposta.
+Em um sistema de comércio eletrônico do tipo shopping virtual, consideramos que existem duas jornadas de usuário de suma importância, do comprador e do lojista. Para cada uma dessas jornadas, existem inúmeras ações e operações envolvidas, distribuídas em setores como Pedido, Pagamento, Entrega e Produto. Como um sistema vivo, cada componente tem sua devida importancia, e caso algum deles apresente falhas, pode comprometer o sistema como um todo.
+
+Do ponto de vista de escalabilidade, Marketplaces podem crescer significantemente em pouco tempo, ou também ter picos de acessos em datas específicas, como a Black Friday por exemplo. 
+
+Um dos principais requisitos não funcionais de qualquer sistema online atualmente, é ter a capacidade de ser acessado tanto em dispositivos móveis como em desktops e notebooks.
+
+Com estes pontos em evidência, torna-se imprescindivel optar por um ecossistema que suporte tais necessidades. Abaixo, detalharemos a escolha das linguagens e frameworks.
+
+## Padrão de Projeto MVC
+
+De acordo com a escolha do grupo pelo padrão arquitetural MVC, utilizaremos a linguagem Javascript em toda stack. 
+
+Embora atualmente no ambíto online as linguagens campeãs de mercado ainda sejam .NET, PHP e Java, optamos por utilizar Javascript (Versão ECMAScript 2018) para facilitar no entendimento de código por qualquer profissional envolvido, entendemos que todos os responsáveis pela manutenção do código tenham o perfil *Full Stack*, ou seja, capaz de prover soluções nas três camadas de projeto.
+
+### Model e Controller 
+Para as camadas Model e Controller, ou *backend*, será utilizado o runtime de Javascript **Node.JS** e seu framework **Express.js**.
+
+Além da linguagem utilizada e não exigir muitos recursos computacionais, Node.JS possui arquitetura assíncrona baseada em eventos, e apesar de *single thread*, é capaz de executar múltiplas conexões em concorrência. Possui também o repositório mais utilizado de bibliotecas web, o NPM (*Node Package Manager*).
+
+### View (Web)
+Para a camada View em ambientes web, foi escolhida a biblioteca **React** e o framework **Gatsby**.
+
+Mantido pelo Facebook e uma comunidade de desenvolvedores individuais. React tem se provado ser extramamente flexível e agil, sendo utilizado nos sites da Netflix, Airbnb, SeatGeek, HelloSign, Walmart e outros.
+
+Também são utilizados HTML 5 e CSS 3.
+
+### View (App mobile Android e iOS)
+Após o sucesso do React, o Facebook anunciou em 2015 o lançamento do **React Native**, sendo também uma biblioteca Javascript. Segue a filosofia *Learn once, write anywhere*.
+
+Utiliza componentes de interface de usuário nativos tanto de Android como iOS. Oferece grandes vantagens em relação a web views em termos de performance pois não necessita de plugins para se comunicar com as APIs dos sistemas operacionais mobile.
+
+Mesmo em apenas 5 anos da data de lançamento e atualmente na versão 0.63, o React Native já tem arsenal completo para desenvolver qualquer tipo de aplicação, não deixando nada a desejar em relação a Java (Swift) ou Objective-C
+
+### Banco de Dados
+
+Na disciplina anterior, INF 325, concluímos que nosso Marketplace seguirá a tendência de persistência poliglota de bancos de dados. Identificamos que a utilização de tecnologias de bancos de dados específicas para cada finalidade do sistema servirá de diferencial competitivo ao explorar o melhor de cada uma. O arcabouço de dados será composto por:
+
+- Sistema Marketplace: MySQL
+
+- Monitoramento e Logs: MongoDB ou Elasticsearch
+
+- Recomendação de produtos, priorização de fornecedores: Neo4J
+
+- Armazenamento de sessão: Redis ou Cassandra
+
+## Comunicação Entre Camadas
+O principal desafio do ponto de vista arquitetural é projetar a aplicação para utilizar os mesmos componentes independente da interface de usuário web ou mobile.
+
+Para atingir este objetivo, em ambas views React e React Native, a comunicação será feita utilizano a mesma API desenvolvida em Node.JS, ou seja, os mesmos dados serão recuperados tanto via web como mobile. Apenas algumas diferenças do ponto de vista de detalhamento de interface serão consideradas e tratadas de acordo com cada interface.
+
+Por exemplo, ao acessar a página inicial são exibidos os produtos em destaque do marketplace através do resultado da endpoint `/produto/exibe/destaques/{quantidade:opcional}`
+
+Para a View Mobile, será passado o parâmetro `quantidade` para limitar a quantidade de resultados a serem retornados no formato *json*
+
+## Diagrama da Arquitetura
+
+[![Diagrama da Arquitetura](images/diagrama_plataformas_mvc.png)](images/diagrama_plataformas_mvc.png)
