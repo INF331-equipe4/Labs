@@ -48,7 +48,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 * Ele pode ser substituído de acordo com a interface a ser utilizada pelo usuário. 
 * Disponibiliza interfaces para que o cliente selecione um produto, confirme o pedido e acompanhe o status do pedido.
 
-![Componente](diagrama-componente-usuario.png)
+![Componente](images/diagrama-componente-usuario.png)
 
 **Interfaces**
 * ISelecaoProduto
@@ -65,7 +65,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 * Componente para funcionar como View dos gestores. 
 * Disponibiliza interfaces para que os gestores acompanhem a entrega e informações de todos os pedidos.
 
-![Componente](diagrama-componente-gestao.png)
+![Componente](images/diagrama-componente-gestao.png)
 
 **Interfaces**
 * ISolicitaPedidos
@@ -81,7 +81,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 * Aciona o componente Leilão para solicitar o leilão invertido e o componente ControlePedido para enviar os pedidos realizados.
 * Recebe mensagens dos fornecedores para atualizar os Models.
 
-![Componente](diagrama-componente-marketplace.png)
+![Componente](images/diagrama-componente-marketplace.png)
 
 **Interfaces**
 * IProduto
@@ -105,7 +105,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 * Também disponibiliza interfaces para informar os gestores do MarketPlace sobre o andamento dos pedidos.
 
 
-![Componente](diagrama-componente-controle_pedido.png)
+![Componente](images/diagrama-componente-controle_pedido.png)
 
 **Interfaces**
 * IPedidos
@@ -122,7 +122,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 * Publica no barramento a mensagem com o produto demandado e recebe as ofertas dos fornecedores.
 * Envia ao componente Marketplace o resultado do leilão, através da seleção dos melhores valores.
 
-![Componente](diagrama-componente-leilao.png)
+![Componente](images/diagrama-componente-leilao.png)
 
 **Interfaces**
 * ISolicitaLeilao
@@ -135,7 +135,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 * Componente dos fornecedores que fazem parte do Marketplace.
 * Ele possui interfaces para que os fornecedore participem do leilão invertido e façam atualizações da informações de estoque.
 
-![Componente](diagrama-componente-fornecedor.png)
+![Componente](images/diagrama-componente-fornecedor.png)
 
 **Interfaces**
 * IConfirmaEstoque
@@ -146,7 +146,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 * Componente responsável pela entrega dos pedidos e registro destas transações.
 
-![Componente](diagrama-componente-logistica.png)
+![Componente](images/diagrama-componente-logistica.png)
 
 **Interfaces**
 * IStatus
@@ -158,7 +158,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 * Componente responsável pelo pagamento dos pedidos.
 
-![Componente](diagrama-componente-pagamento.png)
+![Componente](images/diagrama-componente-pagamento.png)
 
 **Interfaces**
 * IConfirmaPedido
@@ -169,7 +169,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 * Componente que funciona como Model para o cadastro de usuários.
 
-![Componente](diagrama-componente-cadastro.png)
+![Componente](images/diagrama-componente-cadastro.png)
 
 **Interfaces**
 * IObtemCadastro
@@ -179,7 +179,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 * Componente que funciona como Model para o estoque de produtos do MarketPlace.
 
-![Componente](diagrama-componente-estoque.png)
+![Componente](images/diagrama-componente-estoque.png)
 
 **Interfaces**
 * IObtemEstoque
@@ -189,7 +189,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 * Componente que funciona como Model para os detalhes dos produtos do MarketPlace.
 
-![Componente](diagrama-componente-produto.png)
+![Componente](images/diagrama-componente-produto.png)
 
 **Interfaces**
 * IObtemProduto
@@ -199,7 +199,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 * Componente que funciona como Model para os pedidos do MarketPlace.
 
-![Componente](diagrama-componente-pedido.png)
+![Componente](images/diagrama-componente-pedido.png)
 
 **Interfaces**
 * IObtemPedido
@@ -209,7 +209,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 * Componente que funciona como Model para as transações de pagamentos.
 
-![Componente](diagrama-componente-transacoes_pagamento.png)
+![Componente](images/diagrama-componente-transacoes_pagamento.png)
 
 **Interfaces**
 * IPagamento
@@ -218,7 +218,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 * Componente que funciona como Model para as transações de logística.
 
-![Componente](diagrama-componente-transacoes_logistica.png)
+![Componente](images/diagrama-componente-transacoes_logistica.png)
 
 **Interfaces**
 * ILogistica
