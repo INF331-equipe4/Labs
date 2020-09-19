@@ -24,12 +24,12 @@
 * O resultado das consultas feitas pelo `componente Marketplace`, a respeito do produto selecionado, é devolvido para o `componente Usuário` através da interface `IDetalhesProduto`.
 * Com as informações obtidas, o cliente realiza seu pedido através da interface `IConfirmaPedido` do `componente Usuário`.
 * O pedido é passado para o `componente Marketplace` através da interface `IPedido`. O `componente Marketplace` passa o pedido através da interface `IPedido` para o `componente ControlePedido`.
-* O `componente ControlePedido` publica no Barramento B uma mensagem  com o tópico “`confirma/pagamento/<pedido>`” contendo os detalhes do pedido confirmados pelo cliente para o pagamento.
-* O `componente Pagamento`, que assina o tópico “`confirma/pagamento/#`”, recebe a mensagem e guarda no `componente TransaçõesPagamento` um histórico da transação financeira, usando a interface `IPagamento`.
-* O `componente Pagamento` publica no Barramento B uma mensagem contendo o status do pagamento com o tópico “`status/pagamento/<pedido>/<status>`”.
-* O `componente ControlePedido` assina o tópico “`status/#`” e recebe a mensagem publicada pelo `componente Pagamento`. Caso o pagamento seja confirmado, ele publica uma mensagem contendo o pedido com o tópico “`confirma/logistica/<pedido>`”.
-* O `componente Logística` assina o tópico “`confirma/logistica/#`” e recebe o pedido para a entrega e guarda no `componente TransaçõesLogística` um histórico da transação financeira, usando a interface `ILogistica`.
-* O `componente Logística` publica a mensagem com o tópico “`status/logistica/<pedido>/<status>`” que é recebido pelo `componente ControlePedido` que assina o tópico “`status/#`”.
+* O `componente ControlePedido` publica no Barramento B uma mensagem  com o tópico “`confirma/pedido/{código_pedido}`” contendo os detalhes do pedido confirmados pelo cliente para o pagamento.
+* O `componente Pagamento`, que assina o tópico “`confirma/pedido/#`”, recebe a mensagem e guarda no `componente TransaçõesPagamento` um histórico da transação financeira, usando a interface `IPagamento`.
+* O `componente Pagamento` publica no Barramento B uma mensagem contendo o status do pagamento com o tópico “`acompanhamento/{id_pedido}`”.
+* O `componente ControlePedido` assina o tópico “`acompanhamento/#`” e recebe a mensagem publicada pelo `componente Pagamento`.
+* O `componente Logística` assina o tópico “`confirma/pedido/#`” e recebe o pedido para a entrega e guarda no `componente TransaçõesLogística` um histórico da transação de logística, usando a interface `ILogistica`.
+* O `componente Logística` publica a mensagem com o tópico “`acompanhamento/{id_pedido}`” que é recebido pelo `componente ControlePedido` que assina o tópico “`acompanhamento/#`”.
 * O `Componente Usuário` obtém do `componente ControlePedido` a informacão do status do pedido através da interface `IStatusPedido`. É disponibilizada ao cliente a interface `ISolicitaStatus`.
 * O componente `Gestão` obtém do `componente ControlePedido` as informações referentes aos pedidos através da interface `IPedidos`. Este componente obtém também do componente Logística informações referentes a entrega através da interface 'IStatusLogistica'.
 * O componente `Gestão` disponibiliza duas interfaces aos gestores do sistema, a `ISolicitaLogistica` e `ISolicitaPedidos`.
@@ -218,71 +218,327 @@
 
 ## Detalhamento das Interfaces
 
-### Interface `<nome da interface>`
+## Detalhamento das Interfaces
 
-> Resumo do papel da interface.
+### Interface `IConfirmaEstoque`
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+> Usada pelo componente Fornecedor para postar mensagens com informações de estoque de determinado produto.
+
+**Tópico**: `estoque/região/confirma/{cod_produto}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/classes-json-estoque.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"codigo": "112233",
+	"nome": "Pendrive",
+	"marca": "Kingston",
+	"setor": "Informática",
+	"subsetor": "dispositivos de armazenamento",
+	"detalhes-produto": 
+		{
+			"modelo": "DataTraveler",
+			"capacidade": 16
+		},
+	"regiao-estoque": 
+		{
+			"cidade": "Salvador",
+			"estado": "Bahia"
+		},
+	"estoque": 2000
+}
+
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Estoque**
+
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`código` | `Código de identificação do produto no Marketplace`
+`nome` | `Nome associado ao produto`
+`marca` | `Nome comercial do fabricante`
+`setor` | `Setor do Marketplace associado ao produto`
+`subsetor` | `Sub-setor do Marketplace associado ao setor do atributo acima`
+`detalhes-produto` | `Mensagem JSON com detalhes específicos ligados ao produto em questão. O conteúdo dessa mensagem JSON se adapta ao tipo e setor do produto em questão`
+`região-estoque` | `Mensagem JSON com o local do estoque`
+`estoque` | `Quantidade de itens em estoque`
 
-## Exemplo
+**Região do Estoque**
 
-### Interface DadosPedido
+Atributo | Descrição
+-------| --------
+`cidade` | `Nome da cidade onde está localizado o estoque`
+`estado` | `Nome do estado onde está localizado o estoque`
 
-Interface para envio de dados do pedido com itens associados.
+**Detalhes do Produto**
 
-**Tópico**: `pedido/{id}/dados`
+Atributo | Descrição
+-------| --------
+`modelo` | `Modelo associado ao produto`
+`capacidade` | `Capacidade de armazenamento do produto`
+
+### Interface `IDemanda`
+
+> Usada pelo componente Leilão para iniciar o leilão de preços de um determinado produto.
+
+**Tópico**: `leilão/demanda/{cod_produto}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/classes-json-demanda.png)
 
 ~~~json
 {
-  "number": 16,
-  "duoDate": "2009-10-04",
-  "total": 1937.01,
-  "items": {
-    "item": {
-       "itemid": "1245",
-       "quantity": 1
-    },
-    "item": {
-       "itemid": "1321",
-       "quantity": 1
-    }
-  }  
+	"código": 112233,
+	"timestamp": "18-09-2020T11:33:00"
+}
+
+~~~
+
+Detalhamento da mensagem JSON:
+
+**Demanda do Leilão**
+
+Atributo | Descrição
+-------| --------
+`código` | `Código do produto no Marketplace`
+`timestamp` | `Horário em que o leilão foi iniciado`
+
+### Interface `ILance`
+
+> Usada pelo componente Fornecedor para publicar mensagens com o preço de determinado produto.
+
+**Tópico**: `leilão/lance/{cod_produto}`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/classes-json-lance.png)
+
+~~~json
+{
+	"código": "112233",
+	"preço": 50.00,
+	"desconto": 15,
+	"timestamp": "18-09-2020T11:34:00"
+}
+
+~~~
+
+Detalhamento da mensagem JSON:
+
+**Lance**
+
+Atributo | Descrição
+-------| --------
+`código` | `Código do produto no Marketplace`
+`preço` | `Preço unitário estipulado pelo Fornecedor (em Reais)`
+`desconto` | `Desconto oferecido pelo Fornecedor a ser aplicado sobre o preço (em porcentagem)`
+`timestamp` | `Data e hora em que a mensagem com o lance foi publicada pelo Fornecedor`
+
+### Interface `IConfirmaPedido`
+
+> Interface usada pelo componente Controle Pedido para publicar mensagens de confirmação de pedido feito por um cliente.
+
+**Tópico**: `confirma/pedido/{id_pedido}`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/classes-json-pedido.png)
+
+~~~json
+{
+	"id": 999,
+	"cliente": "wilsoncosta",
+	"fornecedor": "magazineluiza",
+	"pedidos":
+	{
+		"pedido":
+			{
+				"codigo": "112233",
+				"quantidade": 2,
+				"valor": 60
+			},
+		"pedido":
+			{
+				"codigo": "223344",
+				"quantidade": 1,
+				"valor": 100
+			}
+	},
+	"timestamp": "18-09-2020T11:40:00",
+	"endereço":
+		{
+			"cidade": "Salvador",
+			"estado": "Bahia",
+			"rua": "Rua Asdrubal",
+			"numero": 10
+		},
+	"tipo-pagamento": "Cartão de crédito",
+	"detalhes-pagamento":
+		{
+			"número": "0011223344556677",
+			"parcelas": 3
+		}
+}
+
+~~~
+
+Detalhamento da mensagem JSON:
+
+**Pedido**
+
+Atributo | Descrição
+-------| --------
+`id` | `Número de identificação do pedido` 
+`cliente` | `Login do cliente na plataforma do Marketplace`
+`fornecedor` | `Login do fornecedor na plataforma do Marketplace`
+`pedidos` | `Mensagens JSON com identificação e quantidade dos produtos inclusos no pedido e valor da compra`
+`timestamp` | `Data e hora em que a compra foi realizada`
+`endereço` | `Mensagem JSON com o endereço para entrega do pedido`
+`tipo-pagamento` | `Forma de pagamento utilizada no pedido`
+`detalhes-pagamento` | `Mensagem JSON com detalhes da forma de pagamento`
+
+**Produto incluso no pedido**
+
+Atributo | Descrição
+-------| --------
+`código` | `Código de identificação do produto no Marketplace`
+`quantidade` | `Quantidade de itens do produto inclusos no pedido`
+`valor` | `Valor do pedido para esse produto`
+
+**Endereço de entrega**
+
+Atributo | Descrição
+-------| --------
+`cidade` | `Nome da cidade do local de entrega`
+`estado` | `Nome do estado do local de entrega`
+`rua` | `Nome da rua do local de entrega`
+`número` | `Número do endereço de entrega`
+
+**Detalhes do pagamento**
+
+Atributo | Descrição
+-------| --------
+`número` | `Número do cartão de crédito`
+`parcelas` | `Número de parcelas escolhidas para o pagamento`
+
+### Interface `IOrdem`
+
+> Interface usada para publicar mensagens com a criação de uma nova entrega.
+
+**Tópico**: `confirma/entrega/{id_entrega}`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/classes-json-entrega.png)
+
+~~~json
+{
+	"id": 22,
+	"cliente": "wilsoncosta",
+	"fornecedor": "magazineluiza",
+	"transportadora": "loggi",
+	"nota-fiscal": "000001155",
+	"endereço":
+		{
+			"cidade": "Salvador",
+			"estado": "Bahia",
+			"rua": "Rua Asdrubal",
+			"numero": 10
+		},
+	"frete": 15.00,
+	"prazo": "25-09-2020T00:00:00"
 }
 ~~~
 
 Detalhamento da mensagem JSON:
 
-**Order**
-Atributo | Descrição
--------| --------
-number | número do pedido
-duoDate | data de vencimento
-total | valor total do pedido
-items | itens do pedido
+**Entrega**
 
-**Item**
 Atributo | Descrição
 -------| --------
-itemid | identificador do item
-quantity | quantidade do item
+`id` | `Número de identificação da entrega`
+`cliente` | `Login do cliente na plataforma Marketplace`
+`fornecedor` | `Login do fornecedor na plataforma Marketplace`
+`transportadora` | `Nome comercial da empresa responsável pela entrega`
+`nota-fiscal` | `Número da nota fiscal emitida para o pedido que será entregue`
+`endereço` | `Mensagem JSON com o endereço para entrega`
+`frete` | `Valor do frete cobrado para a entrega`
+`prazo` | `Data estimada de conclusão da entrega`
+
+**Endereço de entrega**
+
+Atributo | Descrição
+-------| --------
+`cidade` | `Nome da cidade do local de entrega`
+`estado` | `Nome do estado do local de entrega`
+`rua` | `Nome da rua do local de entrega`
+`número` | `Número do endereço de entrega`
+
+### Interface `IStatus`
+
+> Interface para mensagens de acompanhamento de status de pagamento e das entregas de um pedido.
+
+**Tópico**: `acompanhamento/{id_pedido}`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/classes-json-status.png)
+
+~~~json
+{
+	"id-pedido": 999,
+	"status-entregas":
+	{
+		"status-entrega":
+		{
+			"id": 22,
+			"status": "A caminho"
+		},
+		"status-entrega":
+		{
+			"id": 23,
+			"status": "Preparando para entrega"
+		}
+	},
+	"status-pagamento":
+	{
+		"id": 15,
+		"status": "Aprovado"
+	},
+	"timestamp": "19-09-2020T08:30:00"
+}
+~~~
+
+Detalhamento da mensagem JSON:
+
+**Status**
+
+Atributo | Descrição
+-------| --------
+`id-pedido` | `Número de identificação do pedido`
+`status-entrega` | `Mensagens JSON com o status das entregas`
+`status-pagamento` | `Mensagem JSON com o status do pagamento`
+`timestamp` | `Data e hora da atualização`
+
+**Status da Entrega**
+
+Atributo | Descrição
+-------| --------
+`id` | `Número de identificação da entrega`
+`status` | `Atualização sobre o status da entrega`
+
+**Status**
+
+Atributo | Descrição
+-------| --------
+`id` | `Número de identificação do pagamento`
+`status` | `Atualização sobre o status do pagamento`
+
 
 # Nível 2
 
