@@ -644,7 +644,7 @@ pedidos e rastreamento dos mesmos junto aos nossos clientes do Marketplace.
 
 ## Detalhamento das Interfaces
 
-### Interface ISolicitaPedidos`
+### Interface ISolicitaPedidos
 
 ![Diagrama da Interface](images/diagrama-interface-itableproducer.png)
 
@@ -657,7 +657,7 @@ Método           | Objetivo
 solicitaPedidos  | Faz a leitura de cada um deles e carrega num vetor | Retorna um vetor com uma lista de pedidos 
 encaminhaPedidos | Le a lista de pedidos do vetor | Retorna uma lista de pedidos captados ao longo do dia
 
-### Interface `IEnviaStatus`
+### Interface IEnviaStatus
 
 ![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
 
@@ -690,7 +690,7 @@ Envia os pedidos para o componente, Agrupa pedidos por Data e encaminha para o c
 
 Método                    | Objetivo
 --------------------------| --------
-relaionaProdutosPorPedido | cria um conjunto MAP para relacionar pedido e produtos | Retorna uma lista de produtos por pedido.
+relacionaProdutosPorPedido | cria um conjunto MAP para relacionar pedido e produtos | Retorna uma lista de produtos por pedido.
 
 
 ### Interface IEntregaPorItinerario
@@ -729,7 +729,6 @@ Esta permite que o status final seja apropriado, ou seja, se o ciente recebeu ou
 Método                 | Objetivo
 -----------------------| --------
 notificaStatusFinal    | Cria uma mensagem com o status e o nro do pedido | Retorna o pedido e o status da entrega.
-
 
 
 # Multiplas Interfaces
