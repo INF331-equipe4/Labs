@@ -214,10 +214,6 @@
 **Interfaces**
 * ILogistica
 
-
-
-## Detalhamento das Interfaces
-
 ## Detalhamento das Interfaces
 
 ### Interface `IConfirmaEstoque`
@@ -542,30 +538,20 @@ Atributo | Descrição
 
 # Nível 2
 
-Apresente aqui o detalhamento do Nível 2 conforme detalhado na especificação com, no mínimo, as seguintes subseções:
-
 ## Diagrama do Nível 2
-
-Apresente um diagrama conforme o modelo a seguir:
 
 ![Modelo de diagrama no nível 2](images/diagrama-subcomponentes-view.png)
 ![Modelo de diagrama no nível 2](images/diagrama-subcomponentes-controller.png)
 
 ### Detalhamento da interação de componentes
 
-* Este é o principal componente de controle e é responsável por suportar os processos de negócios, referente a logística de entrega de pedido aos
-seus clientes. 
-* A interação feita, através de diversas interfaces e entre elas, temos a que vai, via barramento, onde o mesmo assina um tópico sobre os pedidos
-fechados.
-* A partir desta captação, ele passa a fazer a gestão da organização dos pedidos e entrega dos mesmos aos clientes de todo o marketplace que é um
-dos processos de negócios mais importante no nosso Marketplace.
-
-Para cada componente será apresentado um documento conforme o modelo a seguir:
+* Este é o principal componente de controle e é responsável por suportar os processos de negócios, referente a logística de entrega de pedido aos seus clientes. 
+* A interação feita, através de diversas interfaces e entre elas, temos a que vai, via barramento, onde o mesmo assina um tópico sobre os pedidos fechados.
+* A partir desta captação, ele passa a fazer a gestão da organização dos pedidos e entrega dos mesmos aos clientes de todo o marketplace que é um dos processos de negócios mais importante no nosso Marketplace.
 
 ## Componente Logistica
 
-* Este é o principal componente de controle e é responsável por suportar os processos de negócios, referente a logística de captação e entrega dos
-pedidos e rastreamento dos mesmos junto aos nossos clientes do Marketplace.
+* Este é o principal componente de controle e é responsável por suportar os processos de negócios, referente a logística de captação e entrega dos pedidos e rastreamento dos mesmos junto aos nossos clientes do Marketplace.
 
 ![Componente](images/diagrama-subcomponente-logistica.png)
 
@@ -576,7 +562,6 @@ pedidos e rastreamento dos mesmos junto aos nossos clientes do Marketplace.
 * IRecebePedidos
 * IEntregaPorItinerario
 
-
 ## Componente `Agrupa Pedidos Por Data`
 
 * Este componente é responsável por receber os pedidos que ja estão agrupados por data e encaminhar os mesmos para os clientes, através dos itinerários planejados para as entregas.
@@ -586,20 +571,18 @@ pedidos e rastreamento dos mesmos junto aos nossos clientes do Marketplace.
 **Interfaces**
 * IEnviaPedidos
 
-
 ## Componente Monta Cada Pedido
 
-* Este componente é responsavel por gerir os produtos que devem ser retirados do centro de distribuicao, a partir do que consta em cada item de pedido.
+* Este componente é responsável por gerir os produtos que devem ser retirados do centro de distribuicao, a partir do que consta em cada item de pedido.
 
 ![Componente](images/diagrama-subcomponente-monta_cada_pedido.png)
 
 **Interfaces**
 * AgrupaProdutos
 
-
 ## Componente Separa Itinerario (Regioes)
 
-* Este componente é responsavel por pegar os pedidos organizadas por datas e com os seus respectivos produtos e encaminhar os mesmos para o componente, Dispara Entrega, que vai gerenciar o transporte efetivamente.
+* Este componente é responsável por pegar os pedidos organizadas por datas e com os seus respectivos produtos e encaminhar os mesmos para o componente, Dispara Entrega, que vai gerenciar o transporte efetivamente.
 
 ![Componente](images/diagrama-subcomponente-separa_itinerario.png)
 
@@ -608,10 +591,9 @@ pedidos e rastreamento dos mesmos junto aos nossos clientes do Marketplace.
 * IEntregaPorItinerarios
 * IStatusInicial
 
-
 ## Componente Dispara a Entrega
 
-* Este componente é responsavel por encaminhar os pedidos/produtos associados a transportadora que por sua vez encaminha os mesmos aos clientes, conforme itinerario já estabelecido anteriomente.
+* Este componente é responsável por encaminhar os pedidos/produtos associados a transportadora que por sua vez encaminha os mesmos aos clientes, conforme itinerario já estabelecido anteriomente.
 
 ![Componente](images/diagrama-subcomponente-dispara_a_entrega.png)
 
@@ -648,8 +630,7 @@ pedidos e rastreamento dos mesmos junto aos nossos clientes do Marketplace.
 
 ![Diagrama da Interface](images/diagrama-interface-isolicitapedidos.png)
 
-Ela é responsável por captar os pedidos, a fim de que os mesmos sejam tratados por outros componentes associados ao fluxo de tratamento de 
-pedidos/entrega;
+* Ela é responsável por captar os pedidos, a fim de que os mesmos sejam tratados por outros componentes associados ao fluxo de tratamento de pedidos/entrega.
 
 
 Método           | Objetivo
@@ -661,31 +642,31 @@ encaminhaPedidos | Le a lista de pedidos do vetor. Retorna uma lista de pedidos 
 
 ![Diagrama da Interface](images/diagrama-interface-ienviastatus.png)
 
-É responsável por comunicar o status intermerdiario e final da entrega do pedido aos clientes;
+* É responsável por comunicar o status intermerdiario e final da entrega do pedido aos clientes.
 
 
 Método                    | Objetivo
 --------------------------| --------
-enviaNotificaçãoDeStatus  | Retorno uma String com o numero do pedido e o status final.
+enviaNotificaçãoDeStatus | Retorno uma String com o numero do pedido e o status final.
 
 
 ### Interface IEnviaPedidos
 
 ![Diagrama da Interface](images/diagrama-interface-ienviapedidos.png)
 
-Envia os pedidos para o componente, Agrupa pedidos por Data e para o componente, Monta cada pedido.
+* Envia os pedidos para o componente, Agrupa pedidos por Data e para o componente, Monta cada pedido.
 
 
 Método             | Objetivo
 -------------------| --------
-enviaPedidosDoDia  | Retorna uma lista de pedidos.
+enviaPedidosDoDia | Retorna uma lista de pedidos.
 
 
 ### Interface IAgrupaProdutos
 
 ![Diagrama da Interface](images/diagrama-interface-iagrupapedidos.png)
 
-Envia os pedidos para o componente, Agrupa pedidos por Data e encaminha para o componente, Monta cada pedido.
+* Envia os pedidos para o componente, Agrupa pedidos por Data e encaminha para o componente, Monta cada pedido.
 
 
 Método                    | Objetivo
@@ -697,7 +678,7 @@ relacionaProdutosPorPedido | cria um conjunto MAP para relacionar pedido e produ
 
 ![Diagrama da Interface](images/diagrama-interface-ientregaporitinerario.png)
 
-Permite a consulta dos lotes de pedidos agrupados por dia e por regiao para serem entregues bem como a situaçao de cada um deles.
+* Permite a consulta dos lotes de pedidos agrupados por dia e por regiao para serem entregues bem como a situaçao de cada um deles.
 
 
 Método                 | Objetivo
@@ -709,7 +690,7 @@ separaPedidosPorRegiao | Cria uma lista para cada regiao. Retorna uma lista de p
 
 ![Diagrama da Interface](images/diagrama-interface-istatusinicial.png)
 
-É respnsável por apropriar o status inicial, Entrega do Produto Iniciada, e tambem por acompanhar e evoluir com os demais status da entrega.
+* É responsável por apropriar o status inicial, Entrega do Produto Iniciada, e tambem por acompanhar e evoluir com os demais status da entrega.
 
 
 
@@ -722,13 +703,13 @@ separaPedidosPorRegiao | Cria uma lista para cada regiao. Retorna uma lista de p
 
 ![Diagrama da Interface](images/diagrama-interface-istatusfinal.png)
 
-Esta permite que o status final seja apropriado, ou seja, se o ciente recebeu ou nao o produto.
+* Esta permite que o status final seja apropriado, ou seja, se o ciente recebeu ou nao o produto.
 
 
 
 Método                 | Objetivo
 -----------------------| --------
-notificaStatusFinal    | Cria uma mensagem com o status e o nro do pedido. Retorna o pedido e o status da entrega.
+notificaStatusFinal | Cria uma mensagem com o status e o nro do pedido. Retorna o pedido e o status da entrega.
 
 
 # Multiplas Interfaces
