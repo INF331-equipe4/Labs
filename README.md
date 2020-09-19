@@ -646,7 +646,7 @@ pedidos e rastreamento dos mesmos junto aos nossos clientes do Marketplace.
 
 ### Interface ISolicitaPedidos
 
-![Diagrama da Interface](images/diagrama-interface-itableproducer.png)
+![Diagrama da Interface](images/diagrama-interface-isolicitapedidos.png)
 
 Ela é responsável por captar os pedidos, a fim de que os mesmos sejam tratados por outros componentes associados ao fluxo de tratamento de 
 pedidos/entrega;
@@ -654,12 +654,12 @@ pedidos/entrega;
 
 Método           | Objetivo
 -----------------| --------
-solicitaPedidos  | Faz a leitura de cada um deles e carrega num vetor | Retorna um vetor com uma lista de pedidos 
-encaminhaPedidos | Le a lista de pedidos do vetor | Retorna uma lista de pedidos captados ao longo do dia
+solicitaPedidos  | Faz a leitura de cada um deles e carrega num vetor. Retorna um vetor com uma lista de pedidos 
+encaminhaPedidos | Le a lista de pedidos do vetor. Retorna uma lista de pedidos captados ao longo do dia
 
 ### Interface IEnviaStatus
 
-![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+![Diagrama da Interface](images/diagrama-interface-ienviastatus.png)
 
 É responsável por comunicar o status intermerdiario e final da entrega do pedido aos clientes;
 
@@ -671,7 +671,7 @@ enviaNotificaçãoDeStatus  | Retorno uma String com o numero do pedido e o stat
 
 ### Interface IEnviaPedidos
 
-![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+![Diagrama da Interface](images/diagrama-interface-ienviapedidos.png)
 
 Envia os pedidos para o componente, Agrupa pedidos por Data e para o componente, Monta cada pedido.
 
@@ -683,31 +683,31 @@ enviaPedidosDoDia  | Retorna uma lista de pedidos.
 
 ### Interface IAgrupaProdutos
 
-![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+![Diagrama da Interface](images/diagrama-interface-iagrupapedidos.png)
 
 Envia os pedidos para o componente, Agrupa pedidos por Data e encaminha para o componente, Monta cada pedido.
 
 
 Método                    | Objetivo
 --------------------------| --------
-relacionaProdutosPorPedido | cria um conjunto MAP para relacionar pedido e produtos | Retorna uma lista de produtos por pedido.
+relacionaProdutosPorPedido | cria um conjunto MAP para relacionar pedido e produtos. Retorna uma lista de produtos por pedido.
 
 
 ### Interface IEntregaPorItinerario
 
-![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+![Diagrama da Interface](images/diagrama-interface-ientregaporitinerario.png)
 
 Permite a consulta dos lotes de pedidos agrupados por dia e por regiao para serem entregues bem como a situaçao de cada um deles.
 
 
 Método                 | Objetivo
 -----------------------| --------
-separaPedidosPorRegiao | Cria uma lista para cada regiao | Retorna uma lista de pedidos por região a ser entregue.
+separaPedidosPorRegiao | Cria uma lista para cada regiao. Retorna uma lista de pedidos por região a ser entregue.
 
 
 ### Interface IStatusInicial
 
-![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+![Diagrama da Interface](images/diagrama-interface-istatusinicial.png)
 
 É respnsável por apropriar o status inicial, Entrega do Produto Iniciada, e tambem por acompanhar e evoluir com os demais status da entrega.
 
@@ -715,12 +715,12 @@ separaPedidosPorRegiao | Cria uma lista para cada regiao | Retorna uma lista de 
 
 Método                 | Objetivo
 -----------------------| --------
-separaPedidosPorRegiao | Cria uma lista para cada regiao | Retorna uma lista de pedidos por região a ser entregue.
+separaPedidosPorRegiao | Cria uma lista para cada regiao. Retorna uma lista de pedidos por região a ser entregue.
 
 
 ### Interface IStatusFinal
 
-![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+![Diagrama da Interface](images/diagrama-interface-istatusfinal.png)
 
 Esta permite que o status final seja apropriado, ou seja, se o ciente recebeu ou nao o produto.
 
@@ -728,7 +728,7 @@ Esta permite que o status final seja apropriado, ou seja, se o ciente recebeu ou
 
 Método                 | Objetivo
 -----------------------| --------
-notificaStatusFinal    | Cria uma mensagem com o status e o nro do pedido | Retorna o pedido e o status da entrega.
+notificaStatusFinal    | Cria uma mensagem com o status e o nro do pedido. Retorna o pedido e o status da entrega.
 
 
 # Multiplas Interfaces
