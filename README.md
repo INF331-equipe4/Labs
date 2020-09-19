@@ -32,12 +32,12 @@
 * O `componente Logística` publica a mensagem com o tópico “`acompanhamento/{id_pedido}`” que é recebido pelo `componente ControlePedido` que assina o tópico “`acompanhamento/#`”.
 * O `Componente Usuário` obtém do `componente ControlePedido` a informacão do status do pedido através da interface `IStatusPedido`. É disponibilizada ao cliente a interface `ISolicitaStatus`.
 * O componente `Gestão` obtém do `componente ControlePedido` as informações referentes aos pedidos através da interface `IPedidos`. Este componente obtém também do componente Logística informações referentes a entrega através da interface 'IStatusLogistica'.
-* O componente `Gestão` disponibiliza duas interfaces aos gestores do sistema, a `ISolicitaLogistica` e `ISolicitaPedidos`.
+* O componente `Gestão` disponibiliza duas interfaces aos gestores do sistema, `ISolicitaLogistica` e `ISolicitaPedidos`.
 
 ## Componente Usuário
 
 * Componente para funcionar como View dos clientes. 
-* Ele pode ser substituído de acordo com a interface a ser utilizada pelo usuário. 
+* Ele pode ser substituído de acordo com a interface gráfica utilizada pelo usuário. 
 * Disponibiliza interfaces para que o cliente selecione um produto, confirme o pedido e acompanhe o status do pedido.
 
 ![Componente](images/diagrama-componente-usuario.png)
@@ -548,65 +548,189 @@ Apresente aqui o detalhamento do Nível 2 conforme detalhado na especificação 
 
 Apresente um diagrama conforme o modelo a seguir:
 
-> ![Modelo de diagrama no nível 2](images/diagrama-subcomponentes.png)
+![Modelo de diagrama no nível 2](images/diagrama-subcomponentes-view.png)
+![Modelo de diagrama no nível 2](images/diagrama-subcomponentes-controller.png)
 
 ### Detalhamento da interação de componentes
 
-O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
-
-* O componente `Entrega Pedido Compra` assina no barramento mensagens de tópico "`pedido/+/entrega`" através da interface `Solicita Entrega`.
-  * Ao receber uma mensagem de tópico "`pedido/+/entrega`", dispara o início da entrega de um conjunto de produtos.
-* Os componentes `Solicita Estoque` e `Solicita Compra` se comunicam com componentes externos pelo barramento:
-  * Para consultar o estoque, o componente `Solicita Estoque` publica no barramento uma mensagem de tópico "`produto/<id>/estoque/consulta`" através da interface `Consulta Estoque` e assina mensagens de tópico "`produto/<id>/estoque/status`" através da interface `Posição Estoque` que retorna a disponibilidade do produto.
+* Este é o principal componente de controle e é responsável por suportar os processos de negócios, referente a logística de entrega de pedido aos
+seus clientes. 
+* A interação feita, através de diversas interfaces e entre elas, temos a que vai, via barramento, onde o mesmo assina um tópico sobre os pedidos
+fechados.
+* A partir desta captação, ele passa a fazer a gestão da organização dos pedidos e entrega dos mesmos aos clientes de todo o marketplace que é um
+dos processos de negócios mais importante no nosso Marketplace.
 
 Para cada componente será apresentado um documento conforme o modelo a seguir:
 
-## Componente `<Nome do Componente>`
+## Componente Logistica
 
-> <Resumo do papel do componente e serviços que ele oferece.>
+* Este é o principal componente de controle e é responsável por suportar os processos de negócios, referente a logística de captação e entrega dos
+pedidos e rastreamento dos mesmos junto aos nossos clientes do Marketplace.
 
-![Componente](images/diagrama-componente.png)
+![Componente](images/diagrama-subcomponente-logistica.png)
 
 **Interfaces**
-> * Listagem das interfaces do componente.
+* ISolicitaPedido
+* IEnviaStatus
+* IEnviaPedidos
+* IRecebePedidos
+* IEntregaPorItinerario
 
-As interfaces listadas são detalhadas a seguir:
+
+## Componente `Agrupa Pedidos Por Data`
+
+* Este componente é responsável por receber os pedidos que ja estão agrupados por data e encaminhar os mesmos para os clientes, através dos itinerários planejados para as entregas.
+
+![Componente](images/diagrama-subcomponente-agrupa_pedidos_por_data.png)
+
+**Interfaces**
+* IEnviaPedidos
+
+
+## Componente Monta Cada Pedido
+
+* Este componente é responsavel por gerir os produtos que devem ser retirados do centro de distribuicao, a partir do que consta em cada item de pedido.
+
+![Componente](images/diagrama-subcomponente-monta_cada_pedido.png)
+
+**Interfaces**
+* AgrupaProdutos
+
+
+## Componente Separa Itinerario (Regioes)
+
+* Este componente é responsavel por pegar os pedidos organizadas por datas e com os seus respectivos produtos e encaminhar os mesmos para o componente, Dispara Entrega, que vai gerenciar o transporte efetivamente.
+
+![Componente](images/diagrama-subcomponente-separa_itinerario.png)
+
+**Interfaces**
+* IRecebePedidos
+* IEntregaPorItinerarios
+* IStatusInicial
+
+
+## Componente Dispara a Entrega
+
+* Este componente é responsavel por encaminhar os pedidos/produtos associados a transportadora que por sua vez encaminha os mesmos aos clientes, conforme itinerario já estabelecido anteriomente.
+
+![Componente](images/diagrama-subcomponente-dispara_a_entrega.png)
+
+**Interfaces**
+* IEntregaPorItinerario
+* IEnviaProduto
+
+
+## Componente Status da Entrega
+
+* Este componente faz a gestão do status de cada pedido que esta em tramite, ou seja, sendo entregue ao cliente e associando os diversos status, a fim de permitir o rastreio pelo cliente.
+
+![Componente](images/diagrama-subcomponente-status_de_entrega.png)
+
+**Interfaces**
+* IStatusInicial
+* IStatusFinal
+
+## Componente Gestão
+
+* Este componente faz a gestão da View logística.
+
+![Componente](images/diagrama-subcomponente-gestao.png)
+
+**Interfaces**
+* IEnviaPedido
+* IRecebeStatus
+* ILogistica
+* IResultado
 
 ## Detalhamento das Interfaces
 
-### Interface `<nome da interface>`
-
-> ![Diagrama da Interface](images/diagrama-interface-itableproducer.png)
-
-> <Resumo do papel da interface.>
-
-Método | Objetivo
--------| --------
-`<id do método>` | `<objetivo do método e descrição dos parâmetros>`
-
-## Exemplos:
-
-### Interface `ITableProducer`
+### Interface ISolicitaPedidos`
 
 ![Diagrama da Interface](images/diagrama-interface-itableproducer.png)
 
-Interface provida por qualquer fonte de dados que os forneça na forma de uma tabela.
+Ela é responsável por captar os pedidos, a fim de que os mesmos sejam tratados por outros componentes associados ao fluxo de tratamento de 
+pedidos/entrega;
 
-Método | Objetivo
--------| --------
-`requestAttributes` | Retorna um vetor com o nome de todos os atributos (colunas) da tabela.
-`requestInstances` | Retorna uma matriz em que cada linha representa uma instância e cada coluna o valor do respectivo atributo (a ordem dos atributos é a mesma daquela fornecida por `requestAttributes`.
 
-### Interface `IDataSetProperties`
+Método           | Objetivo
+-----------------| --------
+solicitaPedidos  | Faz a leitura de cada um deles e carrega num vetor | Retorna um vetor com uma lista de pedidos 
+encaminhaPedidos | Le a lista de pedidos do vetor | Retorna uma lista de pedidos captados ao longo do dia
+
+### Interface `IEnviaStatus`
 
 ![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
 
-Define o recurso (usualmente o caminho para um arquivo em disco) que é a fonte de dados.
+É responsável por comunicar o status intermerdiario e final da entrega do pedido aos clientes;
 
-Método | Objetivo
--------| --------
-`getDataSource` | Retorna o caminho da fonte de dados.
-`setDataSource` | Define o caminho da fonte de dados, informado através do parâmetro `dataSource`.
+
+Método                    | Objetivo
+--------------------------| --------
+enviaNotificaçãoDeStatus  | Retorno uma String com o numero do pedido e o status final.
+
+
+### Interface IEnviaPedidos
+
+![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+
+Envia os pedidos para o componente, Agrupa pedidos por Data e para o componente, Monta cada pedido.
+
+
+Método             | Objetivo
+-------------------| --------
+enviaPedidosDoDia  | Retorna uma lista de pedidos.
+
+
+### Interface IAgrupaProdutos
+
+![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+
+Envia os pedidos para o componente, Agrupa pedidos por Data e encaminha para o componente, Monta cada pedido.
+
+
+Método                    | Objetivo
+--------------------------| --------
+relaionaProdutosPorPedido | cria um conjunto MAP para relacionar pedido e produtos | Retorna uma lista de produtos por pedido.
+
+
+### Interface IEntregaPorItinerario
+
+![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+
+Permite a consulta dos lotes de pedidos agrupados por dia e por regiao para serem entregues bem como a situaçao de cada um deles.
+
+
+Método                 | Objetivo
+-----------------------| --------
+separaPedidosPorRegiao | Cria uma lista para cada regiao | Retorna uma lista de pedidos por região a ser entregue.
+
+
+### Interface IStatusInicial
+
+![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+
+É respnsável por apropriar o status inicial, Entrega do Produto Iniciada, e tambem por acompanhar e evoluir com os demais status da entrega.
+
+
+
+Método                 | Objetivo
+-----------------------| --------
+separaPedidosPorRegiao | Cria uma lista para cada regiao | Retorna uma lista de pedidos por região a ser entregue.
+
+
+### Interface IStatusFinal
+
+![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
+
+Esta permite que o status final seja apropriado, ou seja, se o ciente recebeu ou nao o produto.
+
+
+
+Método                 | Objetivo
+-----------------------| --------
+notificaStatusFinal    | Cria uma mensagem com o status e o nro do pedido | Retorna o pedido e o status da entrega.
+
+
 
 # Multiplas Interfaces
 
