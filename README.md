@@ -1,11 +1,11 @@
 # Projeto Componentes MarketPlace
 
 # Equipe
-* `Caio Vitor`
-* `Dennis Phillips`
-* `Gustavo Nakahara`
-* `Manoel Teixeira`
-* `Wilson Costa`
+* Caio Vitor
+* Dennis Phillips
+* Gustavo Nakahara
+* Manoel Teixeira
+* Wilson Costa
 
 # Nível 1
 
@@ -14,11 +14,6 @@
 ![Diagrama no nível 1](images/coreografia.png)
 
 ### Detalhamento da interação de componentes
-
-O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
-
-* O `componente X` inicia o leilão publicando no barramento a mensagem de tópico "`leilão/<número>/início`" através da interface `Gerente Leilão`, iniciando um leilão.
-* O `componente Y` assina no barramento mensagens de tópico "`leilão/+/início`" através da interface `Participa Leilão`. Quando recebe uma mensagem…
 
 * O `componente Usuário` dispõe de uma interface `ISeleçãoProduto` que permite que o usuário selecione um produto de uma lista obtida através da interface `IListaProdutos`.
 * O `componente Marketplace` recebe do `componente Usuário` o produto selecionado através da interface `IProduto`.
@@ -38,9 +33,6 @@ O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
 * O `Componente Usuário` obtém do `componente ControlePedido` a informacão do status do pedido através da interface `IStatusPedido`. É disponibilizada ao cliente a interface `ISolicitaStatus`.
 * O componente `Gestão` obtém do `componente ControlePedido` as informações referentes aos pedidos através da interface `IPedidos`. Este componente obtém também do componente Logística informações referentes a entrega através da interface 'IStatusLogistica'.
 * O componente `Gestão` disponibiliza duas interfaces aos gestores do sistema, a `ISolicitaLogistica` e `ISolicitaPedidos`.
-
-
-Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 ## Componente Usuário
 
@@ -103,7 +95,6 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 * Componente para funcionar como Controller do andamento dos pedidos. 
 * Recebe os pedidos feitos pelos clientes e os distribui pelo barramente para os componentes responsáveis pelo pagamento e entrega.
 * Também disponibiliza interfaces para informar os gestores do MarketPlace sobre o andamento dos pedidos.
-
 
 ![Componente](images/diagrama-componente-controle_pedido.png)
 
