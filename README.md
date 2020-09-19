@@ -17,9 +17,6 @@
 
 O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
 
-* O `componente X` inicia o leilão publicando no barramento a mensagem de tópico "`leilão/<número>/início`" através da interface `Gerente Leilão`, iniciando um leilão.
-* O `componente Y` assina no barramento mensagens de tópico "`leilão/+/início`" através da interface `Participa Leilão`. Quando recebe uma mensagem…
-
 * O `componente Usuário` dispõe de uma interface `ISeleçãoProduto` que permite que o usuário selecione um produto de uma lista obtida através da interface `IListaProdutos`.
 * O `componente Marketplace` recebe do `componente Usuário` o produto selecionado através da interface `IProduto`.
 * O `componente Marketplace` aciona o `componente Leilão` através da interface 'ISolicitaLeilão'.
@@ -29,12 +26,12 @@ O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
 * O resultado das consultas feitas pelo `componente Marketplace`, a respeito do produto selecionado, é devolvido para o `componente Usuário` através da interface `IDetalhesProduto`.
 * Com as informações obtidas, o cliente realiza seu pedido através da interface `IConfirmaPedido` do `componente Usuário`.
 * O pedido é passado para o `componente Marketplace` através da interface `IPedido`. O `componente Marketplace` passa o pedido através da interface `IPedido` para o `componente ControlePedido`.
-* O `componente ControlePedido` publica no Barramento B uma mensagem  com o tópico “`confirma/pagamento/<pedido>`” contendo os detalhes do pedido confirmados pelo cliente para o pagamento.
-* O `componente Pagamento`, que assina o tópico “`confirma/pagamento/#`”, recebe a mensagem e guarda no `componente TransaçõesPagamento` um histórico da transação financeira, usando a interface `IPagamento`.
-* O `componente Pagamento` publica no Barramento B uma mensagem contendo o status do pagamento com o tópico “`status/pagamento/<pedido>/<status>`”.
-* O `componente ControlePedido` assina o tópico “`status/#`” e recebe a mensagem publicada pelo `componente Pagamento`. Caso o pagamento seja confirmado, ele publica uma mensagem contendo o pedido com o tópico “`confirma/logistica/<pedido>`”.
-* O `componente Logística` assina o tópico “`confirma/logistica/#`” e recebe o pedido para a entrega e guarda no `componente TransaçõesLogística` um histórico da transação financeira, usando a interface `ILogistica`.
-* O `componente Logística` publica a mensagem com o tópico “`status/logistica/<pedido>/<status>`” que é recebido pelo `componente ControlePedido` que assina o tópico “`status/#`”.
+* O `componente ControlePedido` publica no Barramento B uma mensagem  com o tópico “`confirma/pedido/{código_pedido}`” contendo os detalhes do pedido confirmados pelo cliente para o pagamento.
+* O `componente Pagamento`, que assina o tópico “`confirma/pedido/#`”, recebe a mensagem e guarda no `componente TransaçõesPagamento` um histórico da transação financeira, usando a interface `IPagamento`.
+* O `componente Pagamento` publica no Barramento B uma mensagem contendo o status do pagamento com o tópico “`acompanhamento/{id_pedido}`”.
+* O `componente ControlePedido` assina o tópico “`acompanhamento/#`” e recebe a mensagem publicada pelo `componente Pagamento`.
+* O `componente Logística` assina o tópico “`confirma/pedido/#`” e recebe o pedido para a entrega e guarda no `componente TransaçõesLogística` um histórico da transação de logística, usando a interface `ILogistica`.
+* O `componente Logística` publica a mensagem com o tópico “`acompanhamento/{id_pedido}`” que é recebido pelo `componente ControlePedido` que assina o tópico “`acompanhamento/#`”.
 * O `Componente Usuário` obtém do `componente ControlePedido` a informacão do status do pedido através da interface `IStatusPedido`. É disponibilizada ao cliente a interface `ISolicitaStatus`.
 * O componente `Gestão` obtém do `componente ControlePedido` as informações referentes aos pedidos através da interface `IPedidos`. Este componente obtém também do componente Logística informações referentes a entrega através da interface 'IStatusLogistica'.
 * O componente `Gestão` disponibiliza duas interfaces aos gestores do sistema, a `ISolicitaLogistica` e `ISolicitaPedidos`.
